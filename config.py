@@ -4,7 +4,7 @@ app_dir = os.path.abspath(os.path.dirname(__file__))
 
 class BaseConfig:
     DEBUG = True
-    POSTGRES_URL="udacity-p4-db.postgres.database.azure.com"  #TODO: Update value
+    POSTGRES_URL="udacity-p4-postgresdb.postgres.database.azure.com"  #TODO: Update value
     POSTGRES_USER="udacity@udacity-p4-postgresdb " #TODO: Update value
     POSTGRES_PW="P@$$word"   #TODO: Update value
     POSTGRES_DB="techconfdb"   #TODO: Update value
