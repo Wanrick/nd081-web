@@ -2,7 +2,7 @@ from app import app, db, queue_client
 from datetime import datetime
 from app.models import Attendee, Conference, Notification
 from flask import render_template, session, request, redirect, url_for, flash, make_response, session
-from azure.servicebus import Message
+from azure.servicebus import ServiceBusClient, ServiceBusMessage
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 import logging
@@ -73,8 +73,13 @@ def notification():
             #################################################
             # TODO Call servicebus queue_client to enqueue notification ID
 
-            sbClient = ServiceBusClient.from_connection_string(config.get('SERVICE_BUS_CONNECTION_STRING'))
-            sbClient.send_queue_message(config.get('SERVICE_BUS_QUEUE_NAME'), Message(notification.id))
+            sbClient = ServiceBusClient.from_connection_string(app.config.get('SERVICE_BUS_CONNECTION_STRING'), logging_enable=True)
+
+            with sbClient:
+                sender = sbClient.get_queue_sender(queue_name=app.config.get('SERVICE_BUS_QUEUE_NAME'))
+
+                with sender:
+                    sender.send_messages(ServiceBusMessage(notification.id))
 
             ##################################################
 
