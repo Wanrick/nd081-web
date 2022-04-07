@@ -79,7 +79,7 @@ def notification():
                 sender = sbClient.get_queue_sender(queue_name=app.config.get('SERVICE_BUS_QUEUE_NAME'))
 
                 with sender:
-                    sender.send_messages(ServiceBusMessage(notification.id))
+                    sender.send_messages(ServiceBusMessage('{}'.format(notification.id)))
 
             ##################################################
 
